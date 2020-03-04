@@ -11,8 +11,14 @@
         "express": ">=3.11.0",
         "fingerprintjs2": "^2.0.6",
         "grunt-contrib-concat": "^1.0.1",
+        "js-event-bus": "^1.0.0",
+        "jsdom": "^16.2.0",
         "jsonfile": "*",
         "node-rest-client": ">=1.0.0",
+        "puppeteer": "^2.1.1",
+        "puppeteer-core": "^2.1.1",
+        "puppeteer-select": "^1.0.3",
+        "puppeteer-to-istanbul": "^1.2.2",
         "underscore": "*",
         "xml2json": "*"
     },
@@ -99,7 +105,10 @@
     },
     "watch": {
         "build-preview-windows": {
-            "patterns": [ "src","test"],
+            "patterns": [
+                "src",
+                "test"
+            ],
             "extensions": "js,jsx",
             "quiet": true,
             "legacyWatch": true,
@@ -146,6 +155,3 @@
     },
     "homepage": "https://github.com/project-sunbird/sunbird-content-player#readme"
 }
-
-
-

@@ -46,7 +46,7 @@ module.exports = function (grunt) {
 			css: {
 				src: [
 					"public/styles/ionic.css",
-					"public/lstyles/bookshelf_slider.css",
+					"public/styles/bookshelf_slider.css",
 					"public/styles/skin02.css",
 					"public/styles/toastr.min.css",
 					"public/styles/jquery.mCustomScrollbar.min.css"
