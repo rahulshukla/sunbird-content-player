@@ -20,9 +20,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: (cd player && npm install)
-    - run: (cd player && node app)
-    - run: (cd player/public/test && yarn install)
-    - run: (cd player/public/test && yarn test)
+    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player && npm install)
+    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player && node app)
+    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player/public/test && yarn install)
+    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player/public/test && yarn test)
       env:
         CI: true
+
+        
