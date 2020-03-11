@@ -2,6 +2,10 @@ const timeout = 50000
 
 const typingSpeed = 50
 
+let jestscreenshot = require('@jeeyah/jestscreenshot');
+
+const { toMatchImageSnapshot } = require('jest-image-snapshot'); 
+expect.extend({ toMatchImageSnapshot });
 
 describe(
     'Sunbird Player functional testing - PDF content',
@@ -15,6 +19,15 @@ describe(
                 width: 1280,
                 height: 800
             })
+            let path = require('path');
+            let scriptName = path.basename(__filename).replace('.js', '');
+            let options = {
+                page: page, 
+                dirName: __dirname,
+                scriptName: scriptName,
+                onlyFailures: true
+              };
+              await jestscreenshot.init(options);  
         }, timeout)
 
         afterEach(async () => {
@@ -22,6 +35,12 @@ describe(
         })
 
         afterAll(async () => {
+            jestscreenshot.cleanup(function () {
+                if (browser) {
+                  browser.close();
+                }
+                done();
+              });
             await page.close()
         })
 
@@ -46,8 +65,8 @@ describe(
                 let elements = document.getElementsByClassName('page');
                 return elements.length;
             });
-            // expect(parseInt(numberOfPagesInNavigation)).toBe(numberOfPagesInDOM);
-            expect(parseInt(numberOfPagesInNavigation)).toBe(100);
+            expect(parseInt(numberOfPagesInNavigation)).toBe(numberOfPagesInDOM);
+            // expect(parseInt(numberOfPagesInNavigation)).toBe(100);
         })
 
         it('Player should load next page on pdf', async () => {

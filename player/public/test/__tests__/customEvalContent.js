@@ -2,6 +2,8 @@ const timeout = 50000
 
 const typingSpeed = 50
 
+const { toMatchImageSnapshot } = require('jest-image-snapshot'); 
+expect.extend({ toMatchImageSnapshot });
 
 describe(
     'Sunbird Player functional testing - Custom EVAL content',
@@ -40,11 +42,17 @@ describe(
             await playContent.click()
         })
 
+        it('custom eval content test with snapshot', async () => {
+            const image = await page.screenshot();
+            expect(image).toMatchImageSnapshot();
+        })
+
         it('Custom eval without clicking on options opens popup', async () => {
             await page.waitForSelector('#gameCanvas')
             const nextNavigation = await page.waitForSelector('#overlay > next-navigation > div > div > a > img')
             await nextNavigation.click()
-
+            const image = await page.screenshot();
+            expect(image).toMatchImageSnapshot();
         })
 
         it('On click of try again it should stay in same page', async () => {
@@ -72,13 +80,6 @@ describe(
             await page.waitForSelector('#overlay > menu > div > div.gc-menu')
         })
 
-        // it('Should open the burger menu', async() => {
-        //     await page.click('#overlay > menu > div > div.gc-menu > a');
-        //     await page.waitForSelector('#overlay > menu > div > div.gc-menu > div > div:nth-child(2) > div')
-        // })
-
-
-        
     },
     timeout
 )

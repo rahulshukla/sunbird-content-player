@@ -14,6 +14,8 @@ module.exports = {
   
   const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
   
+
+
   class PuppeteerEnvironment extends NodeEnvironment {
     constructor(config) {
       super(config)
