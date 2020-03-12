@@ -16,9 +16,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: (cd player && npm install && npm install -g forever && touch ~/.bash_profile && curl https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash && source ~/.nvm/nvm.sh)
+    - run: (cd player && npm install && npm install -g forever)
     - run: (cd player && forever start app.js)
-    - run: (nvm install v12.13.1 && nvm use 12 && cd player/public/test && yarn install)
+    - run: (/Users/runner/.nvm install v12.13.1 && nvm use 12 && cd player/public/test && yarn install)
     - run: (cd player/public/test && yarn test __tests__/questionset.js)
       env:
         CI: true
