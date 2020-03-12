@@ -18,8 +18,8 @@ describe(
             await page.goto('http://127.0.0.1:3000')
             
             await page.setViewport({width: 1280,height: 800})
-            const metrics = await page.metrics();
-            console.info(metrics);
+            // const metrics = await page.metrics();
+            // console.info(metrics);
             let path = require('path');
             let scriptName = path.basename(__filename).replace('.js', '');
             let options = {
@@ -76,7 +76,7 @@ describe(
             await playQuestion.click()
             await page.waitForSelector('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p')
             const btnStylesInMobile = await page.$eval('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p', btnStylesInMobile => JSON.parse(JSON.stringify(getComputedStyle(btnStylesInMobile))));
-            console.info("font size is" + btnStylesInWeb.fontsize)
+            // console.info("font size is" + btnStylesInWeb.fontsize)
             expect(btnStylesInWeb.fontsize).toEqual(btnStylesInMobile.fontsize) 
             expect(btnStylesInWeb.height).not.toEqual(btnStylesInMobile.height) 
             expect(btnStylesInWeb.width).not.toEqual(btnStylesInMobile.width) 
