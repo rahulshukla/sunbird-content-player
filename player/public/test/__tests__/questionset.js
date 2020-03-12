@@ -18,8 +18,8 @@ describe(
             await page.goto('http://127.0.0.1:3000')
             
             await page.setViewport({width: 1280,height: 800})
-            // const metrics = await page.metrics();
-            // console.info(metrics);
+            const metrics = await page.metrics();
+            console.info(metrics);
             let path = require('path');
             let scriptName = path.basename(__filename).replace('.js', '');
             let options = {
@@ -45,8 +45,6 @@ describe(
             await page.close()
         })
 
-        // Player instance on browser
-
         it('Player shell loaded with fixture stories', async () => {
             await page.waitForSelector('body > div:nth-child(7) > div > ion-pane > ion-content > div > div:nth-child(38)')
         })
@@ -54,6 +52,16 @@ describe(
         it('Should open question set', async() => {
             const playQuestion = await page.waitForSelector('body > div:nth-child(7) > div > ion-pane > ion-content > div > div:nth-child(38)')
             await playQuestion.click()
+        })
+
+        it('Zoom button should open the image in zoomed view', async () => {
+            const zoomImg = await page.waitForSelector('#org-ekstep-contentrenderer-questionunit-questionComponent-ZoomImg')
+            await zoomImg.click()
+        })
+
+        it('check pop exists or not', async()=>{
+            const popup = await page.waitForSelector('#image-model-popup > div.popup-full-body > div > div')
+            await popup.click()
         })
 
         it('Test for title', async () => {
@@ -73,11 +81,12 @@ describe(
             expect(btnStylesInWeb.width).not.toEqual(btnStylesInMobile.width) 
         })
 
-        it('Test for title mcq flow', async () => {
+        it('Test for MCQ question', async () => {
             await page.setViewport({width: 1280,height: 800})
             const playQuestion = await page.waitForSelector('body > div:nth-child(7) > div > ion-pane > ion-content > div > div:nth-child(38)')
             await playQuestion.click()
             await page.waitForSelector('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p')
+           
             const wrongAnswer = await page.waitForSelector('#mcq-question-container > div.bg-graphics-2 > div.outer-option-container.horizontal > div > div > div:nth-child(2)')
             const nextButton = await page.waitForSelector('body > div:nth-child(8) > div > div > custom-next-navigation > div > a > img')
             const previousButton = await page.waitForSelector('body > div:nth-child(8) > div > div > custom-previous-navigation > div > a > img')
@@ -90,7 +99,58 @@ describe(
             await nextButton.click()
             const nextPopupButton = await page.waitForSelector('#popup-buttons-container > div')
             await nextPopupButton.click()
-        })
+            await nextButton.click()
+            const popupNextButton = await page.waitForSelector('#popup-buttons-container > div.left.button')
+            await popupNextButton.click()
+
+            await page.waitForSelector('#ans-field1');
+            await page.evaluate(() => {
+            document.querySelector('#ans-field1').value = 'jupiter';
+            });
+
+            await page.waitForSelector('#ans-field2');
+            await page.evaluate(() => {
+            document.querySelector('#ans-field2').value = 'mercury';
+            });
+            await nextButton.click();
+            const nextPopupButton2 = await page.waitForSelector('#popup-buttons-container > div')
+            await nextPopupButton2.click();
+            await nextButton.click()
+            const popupNextButton2 = await page.waitForSelector('#popup-buttons-container > div.left.button')
+            await popupNextButton2.click()
+
+            const select1 = await page.waitForSelector('#w0')
+            await select1.click()
+
+            const select2 = await page.waitForSelector('#w1')
+            await select2.click()
+
+            const select3 = await page.waitForSelector('#w3')
+            await select3.click()
+
+            const select4 = await page.waitForSelector('#w4')
+            await select4.click()
+
+            const select5 = await page.waitForSelector('#w5')
+            await select5.click()
+
+            await nextButton.click()
+            const nextPopupButton3 = await page.waitForSelector('#popup-buttons-container > div')
+            await nextPopupButton3.click();
+
+            const ratingFour = await page.waitForSelector('#gcFbPopup > div.gc-popup-new.gc-fc-popup > div.gc-popup-body-new > div > div:nth-child(1) > div:nth-child(4) > img')
+            ratingFour.click()
+
+            await page.waitForSelector('#commentText');
+            await page.evaluate(() => {
+            document.querySelector('#commentText').value = 'test comment';
+            });
+
+            const submitButton = await page.waitForSelector('#gcFbPopup > div.gc-popup-new.gc-fc-popup > div.gc-popup-body-new > div')
+            await submitButton.click()
+   
+            // const ratingValue = await page.waitForSelector('#endpage > div.gc-ep-content-holder > div.gc-ep-assessment-cont > div.gc-ep-rating-cont > div > star-rating > div:nth-child(4) > img')
+       })
 
     },
     timeout
