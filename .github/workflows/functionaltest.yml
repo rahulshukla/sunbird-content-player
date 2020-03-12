@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Sunbird-content-player-functional-test
 on:
     push:
       branches:
@@ -9,17 +9,48 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    
+    - name: Install player dependencies 
+        run: |
+        (cd player && npm install && npm install -g forever)
 
-    - run: (cd player && npm install && npm install -g forever)
-    - run: (cd player && forever start app.js)
-    - run: (cd player/public/test && yarn install)
-    - run: (cd player/public/test && yarn test __tests__/questionset.js)
+    - name: Start player with fixture stories 
+        run: |
+        (cd player && forever start app.js)
+
+    - name: Install test cases dependencies
+        run: |
+        (cd player/public/test && yarn install)  
+
+    - name: Start function test cases 
+        run: |
+        (cd player/public/test && yarn test)
+ 
+    - name: Visual diff artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: diff
+          path: player/public/test/__tests__/__image_snapshots__
+
+    - name: Screenshot artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: screenshot
+          path: player/public/test/__tests__/screenshots
+
+    - name: Screenshot artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: Report HTML
+          path: player/public/test/testReport
+
       env:
         CI: true
         
