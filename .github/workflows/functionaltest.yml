@@ -36,7 +36,7 @@ jobs:
     - name: Visual diff artifact
       uses: actions/upload-artifact@v1
       with:
-        name: diff
+        name: Visually changes
         path: player/public/test/__tests__/__image_snapshots__
 
     - name: Screenshot artifact
@@ -45,7 +45,7 @@ jobs:
         name: screenshot
         path: player/public/test/__tests__/screenshots
 
-    - name: Screenshot artifact
+    - name: Report artifact
       uses: actions/upload-artifact@v1
       with:
         name: Report HTML

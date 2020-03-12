@@ -7,66 +7,40 @@ jobs:
     steps:
       - checkout:
           path: ~/content-player
-      
-      - run:
-        name: Workaround for GoogleChrome/puppeteer
-        command: 'sudo apt-get update && sudo apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
-            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
-            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
-            libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
-            ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget --fix-missing'  
 
       - run: sudo npm install -g grunt-cli@1.2.0
       - run: npm install
       - run: npm run build-preview ekstep
       - run: grunt compress:preview
       - run: grunt generate-libs
-      - run: node app 
         #      - run: grunt build-jsdoc
 
           #
           #      - run:
           #          name: running test cases
           #          command: npm run test-player
-      # - run: 
-      #     name: Install sonar scanner
-      #     command: 'sudo npm install -g sonarqube-scanner'
-          
-      # - run: 
-      #     name: Sonar scanner
-      #     command: |
-      #       sonar-scanner -Dsonar.projectKey=project-sunbird_sunbird-content-player -Dsonar.organization=project-sunbird -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.language=js
-      
-      # - run:
-      #     name: Publish to NPM
-      #     command: |
-      #       if [ -z $CIRCLE_PR_NUMBER ]; then 
-      #         commit_hash=$(echo $CIRCLE_SHA1 | cut -c 1-7)
-      #         npm version prerelease --preid=alpha-${commit_hash}
-      #         npm run build-npm-package
-      #         npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-      #         npm pack ./www/preview
-      #         npm publish project-sunbird-content-player-*     
-      #       else
-      #         npm run build-npm-package
-      #       fi
-
-      - run:
-          name: Install node 12 and set as default for functional test
-          command: 'nvm install v12.13.1 && nvm use 12'
-
-      - run:
-          name: install yarn
-          command: 'npm install -g yarn'
-
       - run: 
-          name: install dependency using yarn
-          command: 'cd public/test && yarn install'
-
+          name: Install sonar scanner
+          command: 'sudo npm install -g sonarqube-scanner'
+          
+      - run: 
+          name: Sonar scanner
+          command: |
+            sonar-scanner -Dsonar.projectKey=project-sunbird_sunbird-content-player -Dsonar.organization=project-sunbird -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.language=js
+      
       - run:
-          name: functional test
-          command: 'cd public/test && yarn test __tests__/questionset.js'
-
+          name: Publish to NPM
+          command: |
+            if [ -z $CIRCLE_PR_NUMBER ]; then 
+              commit_hash=$(echo $CIRCLE_SHA1 | cut -c 1-7)
+              npm version prerelease --preid=alpha-${commit_hash}
+              npm run build-npm-package
+              npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+              npm pack ./www/preview
+              npm publish project-sunbird-content-player-*     
+            else
+              npm run build-npm-package
+            fi
              
 workflows:
   version: 2.1

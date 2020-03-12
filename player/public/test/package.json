@@ -19,6 +19,7 @@
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
+    "jest-github-actions-reporter": "^1.0.2",
     "jest-html-reporter": "^2.8.0",
     "jest-html-reporters": "^1.2.1",
     "jest-image-snapshot-diff-reporter": "^1.0.0"
