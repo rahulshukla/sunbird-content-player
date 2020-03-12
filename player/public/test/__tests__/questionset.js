@@ -76,17 +76,17 @@ describe(
             await playQuestion.click()
             await page.waitForSelector('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p')
             const btnStylesInMobile = await page.$eval('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p', btnStylesInMobile => JSON.parse(JSON.stringify(getComputedStyle(btnStylesInMobile))));
+            console.info("font size is" + btnStylesInWeb.fontsize)
             expect(btnStylesInWeb.fontsize).toEqual(btnStylesInMobile.fontsize) 
             expect(btnStylesInWeb.height).not.toEqual(btnStylesInMobile.height) 
             expect(btnStylesInWeb.width).not.toEqual(btnStylesInMobile.width) 
         })
 
-        it('Test for MCQ question', async () => {
+        it('Test for Question Set', async () => {
             await page.setViewport({width: 1280,height: 800})
             const playQuestion = await page.waitForSelector('body > div:nth-child(7) > div > ion-pane > ion-content > div > div:nth-child(38)')
             await playQuestion.click()
             await page.waitForSelector('#mcq-question-container > div.question-content-container > div > div.hiding-container > div > p')
-           
             const wrongAnswer = await page.waitForSelector('#mcq-question-container > div.bg-graphics-2 > div.outer-option-container.horizontal > div > div > div:nth-child(2)')
             const nextButton = await page.waitForSelector('body > div:nth-child(8) > div > div > custom-next-navigation > div > a > img')
             const previousButton = await page.waitForSelector('body > div:nth-child(8) > div > div > custom-previous-navigation > div > a > img')
@@ -102,15 +102,13 @@ describe(
             await nextButton.click()
             const popupNextButton = await page.waitForSelector('#popup-buttons-container > div.left.button')
             await popupNextButton.click()
-
             await page.waitForSelector('#ans-field1');
             await page.evaluate(() => {
-            document.querySelector('#ans-field1').value = 'jupiter';
+                document.querySelector('#ans-field1').value = 'jupiter';
             });
-
             await page.waitForSelector('#ans-field2');
             await page.evaluate(() => {
-            document.querySelector('#ans-field2').value = 'mercury';
+                document.querySelector('#ans-field2').value = 'mercury';
             });
             await nextButton.click();
             const nextPopupButton2 = await page.waitForSelector('#popup-buttons-container > div')
