@@ -29,11 +29,11 @@ jobs:
       run: |
         (cd player && forever start app.js)
 
-    - name: Install test cases dependencies
+    - name: Install test framework dependencies
       run: |
         (cd player/public/test && yarn install)  
 
-    - name: Start function test cases 
+    - name: Start functional test cases 
       run: |
         (cd player/public/test && yarn test)
  
