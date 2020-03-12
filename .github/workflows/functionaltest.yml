@@ -37,29 +37,29 @@ jobs:
       run: |
         (cd player/public/test && yarn test)
  
-    - name: Visual diff artifact
+    - name: Visual changes on UI artifact generation
       uses: actions/upload-artifact@v1
       with:
-        name: Visually changes
+        name: Visual changes on UI
         path: player/public/test/__tests__/__image_snapshots__
 
-    - name: Screenshot artifact
+    - name: Screenshots artifact generation
       uses: actions/upload-artifact@v1
       with:
-        name: screenshot
+        name: Screenshots
         path: player/public/test/__tests__/screenshots
 
-    - name: Report artifact
+    - name: Report artifact generation
       uses: actions/upload-artifact@v1
       with:
         name: Report HTML
         path: player/public/test/testReport
 
-    - name: Player preview
+    - name: Player preview artifact generation
       uses: actions/upload-artifact@v1
       with:
         name: Generated Player preview
-        path: player/www/preview
+        path: player/www
 
       env:
         CI: true
