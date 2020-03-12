@@ -16,10 +16,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player && npm install)
-    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player && node app)
-    - run: (nvm install v12.13.1 && nvm use 12 && cd /home/runner/work/sunbird-content-player/sunbird-content-player/player/public/test && yarn install)
-    - run: (cd /home/runner/work/sunbird-content-player/sunbird-content-player/player/public/test && yarn test __tests__/questionset.js)
+    - run: (cd player && npm install)
+    - run: (cd player && node app)
+    - run: (nvm install v12.13.1 && nvm use 12 && cd player/public/test && yarn install)
+    - run: (cd player/public/test && yarn test __tests__/questionset.js)
       env:
         CI: true
         
