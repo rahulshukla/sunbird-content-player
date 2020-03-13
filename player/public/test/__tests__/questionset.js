@@ -25,8 +25,8 @@ describe(
             await page.goto('http://127.0.0.1:3000')
             
             await page.setViewport({width: 1280,height: 800})
-            // const metrics = await page.metrics();
-            // console.info(metrics);
+            const metrics = await page.metrics();
+            console.info(metrics);
             let path = require('path');
             let scriptName = path.basename(__filename).replace('.js', '');
             let options = {
