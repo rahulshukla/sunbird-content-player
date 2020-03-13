@@ -1,6 +1,6 @@
-Description: >
-  Github action configuration runs functional test cases and generate artifact's 
-  Author: Rahul Shukla <rahul.shukla@ilimi.in>
+# Github action configuration runs functional test cases and generate artifact's 
+# Author: Rahul Shukla <rahul.shukla@ilimi.in>
+
 
 name: Sunbird-Content-Player-Functional-Test
 on:
