@@ -1,3 +1,10 @@
+/**
+ * Functional test cases for question set
+ * @author rahul shukla <rahul.shukla@ilimi.in>
+ * @todo To use image diff we need to ignore options container in MCQ cause it always shuffle 
+ * @link https://github.com/americanexpress/jest-image-snapshot#ignoring-parts-of-the-image-snapshot-if-using-puppeteer
+ */
+
 const timeout = 50000
 
 const typingSpeed = 50
@@ -147,7 +154,7 @@ describe(
             const submitButton = await page.waitForSelector('#gcFbPopup > div.gc-popup-new.gc-fc-popup > div.gc-popup-body-new > div')
             await submitButton.click()
    
-            // const ratingValue = await page.waitForSelector('#endpage > div.gc-ep-content-holder > div.gc-ep-assessment-cont > div.gc-ep-rating-cont > div > star-rating > div:nth-child(4) > img')
+            
        })
 
     },

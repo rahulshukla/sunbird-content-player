@@ -1,4 +1,8 @@
-name: Sunbird-content-player-functional-test
+Description: >
+  Github action configuration runs functional test cases and generate artifact's 
+  Author: Rahul Shukla <rahul.shukla@ilimi.in>
+
+name: Sunbird-Content-Player-Functional-Test
 on:
     push:
       branches:
@@ -37,7 +41,7 @@ jobs:
       run: |
         (cd player/public/test && yarn test)
  
-    - name: Visual changes on UI artifact generation
+    - name: Visual regression artifact generation
       uses: actions/upload-artifact@v1
       with:
         name: Visual changes on UI

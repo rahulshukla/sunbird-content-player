@@ -2,8 +2,15 @@ const timeout = 50000
 
 const typingSpeed = 50
 
+/**
+ * @author rahul shukla <rahul.shukla@ilimi.in>
+ * @todo To use image diff we need to ignore options container in MCQ cause it always shuffle 
+ * @link https://github.com/americanexpress/jest-image-snapshot#ignoring-parts-of-the-image-snapshot-if-using-puppeteer
+ */
+
 const { toMatchImageSnapshot } = require('jest-image-snapshot'); 
 expect.extend({ toMatchImageSnapshot });
+
 
 describe(
     'Sunbird Player functional testing - Custom EVAL content',
