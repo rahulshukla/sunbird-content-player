@@ -6,7 +6,7 @@ name: Sunbird-Content-Player-Functional-Test
 on:
     push:
       branches:
-      - ${{ github.ref }}
+      - release-2.9.0-functionalTest
 jobs:
   build:
     runs-on: macOS-latest
