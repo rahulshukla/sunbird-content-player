@@ -15,5 +15,6 @@ public/js/app/telemetry.js
 app-data/content-list.json
 coverage/
 *.log
-public/test/yarn.lock
-public/test/testReport/
+public/test/*.lock
+public/test/testReport
+public/test/__tests__/__image_snapshots__
