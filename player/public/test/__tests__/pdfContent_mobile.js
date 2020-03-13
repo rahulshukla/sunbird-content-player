@@ -68,8 +68,30 @@ describe(
         })
 
         it('Player should load next page on pdf', async () => {
-            const playContent = await page.$('#overlay > next-navigation > div > a');
+            const playContent = await page.waitForSelector('#overlay > next-navigation > div > a');
             await playContent.click()
+        })
+        it('Player should load previous page on pdf', async() => {
+            const previousContent = await page.waitForSelector('#overlay > previous-navigation > div > a')
+            await previousContent.click()
+        })
+        
+        it('Go to next page by setting a page value', async () => {
+            await page.waitForSelector('#pdf-find-text')
+            await page.evaluate(() => {
+                document.querySelector('#pdf-find-text').value = 5;
+            });
+            await page.waitForSelector('#page-count-container > div.search-page-pdf-arrow-container')
+            await page.evaluate(() => {
+                document.querySelector('#page-count-container > div.search-page-pdf-arrow-container').style = 'display : block';
+            })
+            const goToPage = await page.waitForSelector('#page-count-container > div.search-page-pdf-arrow-container')
+            await goToPage.click()
+        })
+        
+        it('Player should open new tab to download pdf', async () => {
+            const downloadContent = await page.waitForSelector('#download-btn')
+            await downloadContent.click()
         })
     },
     timeout
