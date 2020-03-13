@@ -1,4 +1,3 @@
-![](https://api.travis-ci.org/project-sunbird/sunbird-content-player.svg?branch=master)
 ![Sunbird-Content-Player-Functional-Test](https://github.com/rahulshukla/sunbird-content-player/workflows/Sunbird-Content-Player-Functional-Test/badge.svg?branch=release-2.9.0-functionalTest)
 [![npm version](https://badge.fury.io/js/%40project-sunbird%2Fcontent-player.svg)](https://badge.fury.io/js/%40project-sunbird%2Fcontent-player)
 
