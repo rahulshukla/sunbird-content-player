@@ -58,31 +58,6 @@
     src: url('fonts/NotoSans-Regular.woff') format('woff')
 }
 
-@font-face {
-    /* reference: http://www.latofonts.com/lato-free-fonts/ */
-    font-family: 'lato-black';
-    src: url('fonts/lato/Lato-Black.woff') format('woff')
-}
-
-@font-face {
-    font-family: 'lato-bold';
-    src: url('fonts/lato/Lato-Bold.woff') format('woff')
-}
-
-@font-face {
-    font-family: 'lato-light';
-    src: url('fonts/lato/Lato-Light.woff') format('woff')
-}
-
-@font-face {
-    font-family: 'lato-medium';
-    src: url('fonts/lato/Lato-Medium.woff') format('woff')
-}
-
-@font-face {
-    font-family: 'lato-regular';
-    src: url('fonts/lato/Lato-Regular.woff') format('woff')
-}
 
 @font-face {
     font-family: 'NotoSans-SemiBold';
@@ -1177,7 +1152,6 @@ ion-popover-view.fit ion-content {
 }
 
 .gc-ep-credits>input[type=button] {
-    background-image: url(../assets/icons/btn_credits.png);
     background-repeat: no-repeat;
     padding: 2% 19%;
     border: none;
