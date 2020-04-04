@@ -1,62 +1,25 @@
 Plugin.extend({
+
     _type: 'org.ekstep.progressbar',
     _render: true,
     _isContainer: true,
     _stageId: 0,
+    _socreInstance: {},
+    _progressCounter:{ state:0 },
     initPlugin: function(data) {
-        this._data = data;
-        var dims = this.relativeDims();
-        this._self = new createjs.Container();
-        this._self.x = dims.x;
-        this._self.y = dims.y;
-        this._self.w = dims.w;
-        this._self.h = dims.h;
         var instance = this;
-
-        var groupObj = {
-            "x": 0,
-            "y": data.y,
-            "w": 100,
-            "h": 100,
-            "shape": [],
-            "text": {}
-        }
-        var shapeW = data.w / data.questions;
-
-        //PluginManager.invoke('text', itemText1, this, this._stage, this._theme);
-
-
-        /* For loop to create multiple objects with data to create shape */
-        for (var i = 0; i < data.questions; i++) {
-            var shapeData = {
-                id: "shape" + i,
-                x: i * shapeW,
-                y: 0,
-                h: 100,
-                w: shapeW,
-                stroke: data.progressbarStroke,
-                fill: "#ddd"
-            }
-            groupObj.shape.push(shapeData);
-
-        }
-
-        var assessData = [];
-
-        /*Loop to get the latest OE_ASSESS telemetery 
-            data for each question*/
-
-
-
+        var assessData = '';
+        this._data = data; 
+        EventBus.listeners.telemetryEvent = [];
+        EventBus.addEventListener("telemetryEvent", this.getOEAssessData,this);
         var progressbarObject = this._theme.getParam("progressbarObj");
-        var startIndex, endIndex;
+        
         var currentStageid = this._theme._currentStage;
-
-
         if (_.isUndefined(progressbarObject)) {
             var obj = {};
             obj[currentStageid] = [];
             this._theme.setParam("progressbarObj", obj);
+
         } else {
             if (_.isUndefined(progressbarObject[currentStageid])) {
                 progressbarObject[currentStageid] = [];
@@ -64,110 +27,100 @@ Plugin.extend({
                 assessData = progressbarObject[currentStageid];
             }
         }
+        // to update DOM for old content pass assessData
+        instance.showProgressBarTemplate(data,assessData);
+        
+        instance.updateProgressBar();
+    },
 
+    showProgressBarTemplate: function(data, assessData){
+        var instance = this;
+        var progressBarTemplate = '<div class="container" style="width:100%; display:flex;">';
+        var barWidth = data.w / data.questions;
+        for (var i = 0; i < data.questions; i++) {
+            progressBarTemplate = progressBarTemplate + '<div class="col'+ i +'" style="background-color:white;height: 35px;padding: 1%;border: 1px solid black;width:'+barWidth+'%;"></div>';
+        }
+        progressBarTemplate = progressBarTemplate + '<p id="q-count" style="font-size: xx-large;">'+assessData.length +'/'+data.questions+'</p></div>';
+        var div = document.getElementById(instance._data.id);
+        if (div) {
+            jQuery("#" + instance._data.id).remove();
+        }
+        div = document.createElement('div');
+        div.id = instance._data.id;
+        div.style.width = instance._data.w + '%';
+        div.style.height = instance._data.h + '%';
+        div.style.top=instance._data.y+"%";
+        div.style.left=instance._data.x+"%";
+        div.style.position= "absolute";
+        div.style["z-index"]="1000";
+        var parentDiv = document.getElementById(Renderer.divIds.gameArea);
+        parentDiv.insertBefore(div, parentDiv.childNodes[0]);
+        jQuery("#" + instance._data.id).append(progressBarTemplate);
+        ++instance._progressCounter.state;
+    },
 
-        function getOEAssessData() {
-            var isNavigate = false;
-            var index = 0;
-            for (var i = 0; i < TelemetryService._data.length; i++) {
-               var telemetryObj = TelemetryService._data[i];
-                if (!_.isUndefined(telemetryObj) && telemetryObj.name == "OE_START") {
-                    index = i;
+    getOEAssessData:function(telemetryData) {
+        var instance = this;
+        var teleObj = _.isString(telemetryData.target) ? JSON.parse(telemetryData.target) : telemetryData.target;
+        if (teleObj.eid == "ASSESS") {
+            progressbarObject = instance._theme.getParam("progressbarObj");
+            currentStageid = instance._theme._currentStage;
+            if (_.isUndefined(progressbarObject)) {
+                var obj = {};
+                obj[currentStageid] = [];
+                instance._theme.setParam("progressbarObj", obj);
+            } else {
+                if (_.isUndefined(progressbarObject[currentStageid])) {
+                    progressbarObject[currentStageid] = [];
+                } else {
+                    assessData = progressbarObject[currentStageid];
                 }
             }
-            for (var i = index; i < TelemetryService._data.length; i++) {
-                var telemetryObj = TelemetryService._data[i];
-                if (!_.isUndefined(telemetryObj)) {
-
-                    if (telemetryObj.name == "OE_NAVIGATE") {
-                        if (telemetryObj.event.edata.eks.stageto == currentStageid) {
-                            startIndex = i;
-                            isNavigate = true;
-                        }
-
+            var count = 0;
+            if (assessData.length == 0) {
+                assessData.push(teleObj);
+            } else {
+                for (var n = 0; n < assessData.length; n++) {
+                    if (assessData[n].edata.item.id == teleObj.edata.item.id) {
+                        assessData[n] = teleObj;
+                        count++;
                     }
                 }
-            }
-            if (!isNavigate) {
-                startIndex = 0;
-            };
-
-            for (var j = startIndex; j <= TelemetryService._data.length; j++) {
-
-                var telObj = TelemetryService._data[j];
-                if (!_.isUndefined(telObj)) {
-                    if (telObj.name == "OE_ASSESS") {
-                        var count = 0;
-                        if (assessData.length == 0) {
-                            assessData.push(telObj);
-                        } else {
-                            // assessData.push(TelemetryService._data[i]);
-                            for (var n = 0; n < assessData.length; n++) {
-                                if (assessData[n].event.edata.eks.qid == telObj.event.edata.eks.qid) {
-                                    assessData[n] = telObj;
-                                    count++;
-                                }
-                            }
-                            if (count == 0) {
-                                assessData.push(telObj);
-                            }
-                        }
-                    }
-
+                if (count == 0) {
+                    assessData.push(teleObj);
                 }
             }
-
-
-
-
-            /*Sorting OE_ASSESS arrary based on createdtime and 
-            checking answer to show the progressbar*/
-            if (assessData.length > 0) {
-                _.sortBy(assessData, 'createdTime');
-                for (var i = 0; i < assessData.length; i++) {
-                    if (assessData[i].event.edata.eks.pass == "Yes") {
-                        groupObj.shape[i].fill = data.progressbarSuccess;
-                    } else if (assessData[i].event.edata.eks.pass == "No") {
-                        groupObj.shape[i].fill = data.progressbarFailure;
-                    }
-                }
-            }
-            var attemptedQuestions = assessData.length;
-            var itemText = {};
-
-            var fontsize = String( data.fontSize / 16 + "em");
-
-            itemText.id = _.unique("itemTextId");
-            itemText.align = "left";
-            itemText.valign = "center";
-            itemText.color = "#4c4c4c";
-            itemText.fontsize = fontsize;
-            itemText.$t = attemptedQuestions + "/" + data.questions;
-            itemText.w = 100 - data.w;
-            itemText.x = data.w + 1;
-            itemText.y = 0;
-            itemText.h = 100;
-            groupObj.text = itemText;
-
-            PluginManager.invoke('g', groupObj, instance, instance._stage, instance._theme);
-            Renderer.update = true;
-
             if (!_.isUndefined(progressbarObject)) {
-
                 progressbarObject[currentStageid] = assessData;
-                instance._theme.setParam("progressbarObj", progressbarObject);
+                var progressObj = JSON.parse(JSON.stringify(progressbarObject));
+                instance._theme.setParam("progressbarObj", progressObj);
+            }
+            var attemptedQuestions;
+            var attemptedQuestions = assessData.length;
+
+            // to update DOM for new content
+            instance._attemptedQ = attemptedQuestions + "/" + instance._data.questions;
+            $("#q-count").text(instance._attemptedQ);
+            // to update DOM for new content
+            instance.updateProgressBar(instance);
+           
+            
+        }     
+    },
+    updateProgressBar: function() {
+        var instance = this;
+        var progressData = instance._theme.getParam("progressbarObj");
+        var stageProgData = progressData && progressData[instance._theme._currentStage];
+        if (stageProgData && (stageProgData.length > 0)) {
+            /*Sorting OE_ASSESS/ASSESS arrary based on createdtime and checking answer to show the progressbar*/
+            _.sortBy(stageProgData, 'createdTime');
+            for (var i = 0; i < stageProgData.length; i++) {
+                if (stageProgData[i].edata.pass == "Yes") {
+                    $(".col"+i).css("background-color",instance._data.progressbarSuccess);
+                } else if (assessData[i].edata.pass == "No") {
+                    $(".col"+i).css("background-color",instance._data.progressbarFailure);
+                }
             }
         }
-
-
-
-
-        setTimeout(function() {
-            getOEAssessData();
-
-        }, 500);
-
-
-
     }
 });
