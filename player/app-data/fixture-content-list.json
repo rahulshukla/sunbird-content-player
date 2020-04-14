@@ -985,15 +985,15 @@
             "mimeType": "application/vnd.ekstep.ecml-archive",
             "contentData": {
                 "questionnaire": null,
-                "appIcon": "stories/pratham-camal/logo.png",
+                "appIcon": "",
                 "subject": "literacy_v2",
-                "description": "Question-set",
-                "name": "Question Set",
+                "description": "assessmentTestCases",
+                "name": "assessmentTestCases",
                 "downloadUrl": "",
                 "checksum": null,
                 "loadingMessage": "Without requirements or design, programming is the art of adding bugs to an empty text file. ...",
                 "concepts": [{
-                    "identifier": "LO1",
+                    "identifier": "",
                     "name": "Receptive Vocabulary",
                     "objectType": "Concept"
                 }],
@@ -1001,8 +1001,10 @@
                 "grayScaleAppIcon": null,
                 "pkgVersion": 1
             },
+            
+            
             "isAvailable": true,
-            "path": "fixture-stories/question"
+            "path": "fixture-stories/assessmentTestCases"
         }],
         "ttl": 21
     }
