@@ -63,11 +63,11 @@ jobs:
         name: Report HTML
         path: player/public/test/functional_test/testReport
 
-    - name: Player preview artifact generation
-      uses: actions/upload-artifact@v1
-      with:
-        name: Generated Player preview
-        path: player/www
+    # - name: Player preview artifact generation
+    #   uses: actions/upload-artifact@v1
+    #   with:
+    #     name: Generated Player preview
+    #     path: player/www
 
       env:
         CI: true

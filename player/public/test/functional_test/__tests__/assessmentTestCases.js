@@ -41,13 +41,7 @@ describe(
         })
 
         afterAll(async () => {
-            jestscreenshot.cleanup(function () {
-                if (browser) {
-                    browser.close();
-                }
-                done();
-            });
-            await page.close();
+            await page.close()
         })
 
         it('Player shell loaded with fixture stories', async () => {
