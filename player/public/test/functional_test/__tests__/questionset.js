@@ -43,12 +43,6 @@ describe(
         })
 
         afterAll(async () => {
-            jestscreenshot.cleanup(function () {
-                if (browser) {
-                  browser.close();
-                }
-                done();
-              });
             await page.close()
         })
 
