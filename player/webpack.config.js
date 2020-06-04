@@ -21,7 +21,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ngAnnotatePlugin = require('babel-plugin-angularjs-annotate');
+const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 const fs = require('fs');
 const replace = require('replace-in-file');
 const file_extra = require('fs-extra')
@@ -241,7 +241,7 @@ module.exports = (env, argv) => {
                 copyCorePlugins(env.channel);
             }),
             new ngAnnotatePlugin({
-                explicitOnly: true,
+                add: true,
             }),
             new webpack.ProvidePlugin({
                 "window.$": "jquery",
